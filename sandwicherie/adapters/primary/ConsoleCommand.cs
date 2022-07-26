@@ -1,36 +1,25 @@
-using System.Net.Sockets;
 using sandwicherie.application_core;
-using sandwicherie.domain;
 
 namespace sandwicherie.adapters.primary;
 
-public class CLI
+public class ConsoleCommand
 {
-    private readonly DefaultOrderService _defaultOrderService;
+    private readonly OrderService _orderService;
+    private readonly ParserService _parserService;
 
-    public CLI(DefaultOrderService defaultOrderService)
+    public ConsoleCommand(OrderService orderService, ParserService parserService)
     {
-        _defaultOrderService = defaultOrderService;
+        _orderService = orderService;
+        _parserService = parserService;
     }
 
-    public void StartCLI()
+    public void createOrder(string createOrderInput)
     {
-        
-        
+        var createOrderParsed = _parserService.parseOrderInput(createOrderInput);
+
+        OrderRequest orderRequest = new OrderRequest(createOrderParsed);
+
+        _orderService.ProceedOrder(orderRequest);
     }
 
-    public void MakeOrder()
-    {
-        //TODO parseOrderConsoleInput(string consoleInputString)
-
-        IDictionary<string, SandwicheId> order = new Dictionary<string, SandwicheId>();
-        //fake parsed input
-        order.Add("A", SandwicheId.Of(1));
-        order.Add("B", SandwicheId.Of(2));
-        order.Add("C", SandwicheId.Of(1));
-
-        OrderRequest orderRequest = new OrderRequest(order);
-        _defaultOrderService.ProceedOrder(orderRequest);
-    }
-    
 }

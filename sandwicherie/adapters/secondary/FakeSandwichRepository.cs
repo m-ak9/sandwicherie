@@ -4,7 +4,7 @@ namespace sandwicherie.adapters.secondary;
 
 public class FakeSandwichRepository
 {
-    private static readonly Sandwiche Sandwich1 = Sandwiche.Of(
+    private static readonly Sandwich Sandwich1 = Sandwich.Of(
         "Jambon beurre",
         new List<Ingredient>()
         {
@@ -12,11 +12,10 @@ public class FakeSandwichRepository
             Ingredient.WithAmountOnly("tranche de jambon", 1),
             Ingredient.WithQuantityOnly("beurre", 10)
         },
-        Price.Of(3.50, Devise.Euros),
-        SandwicheId.Of(1)
+        Price.Of(3.50, Devise.Euros)
     );
-    
-    private static readonly Sandwiche Sandwich2 = Sandwiche.Of(
+
+    private static readonly Sandwich Sandwich2 = Sandwich.Of(
         "Poulet crudités",
         new List<Ingredient>()
         {
@@ -27,11 +26,10 @@ public class FakeSandwichRepository
             Ingredient.WithQuantityOnly("mayonnaise", 10),
             Ingredient.WithQuantityOnly("salades", 10)
         },
-        Price.Of(5, Devise.Euros),
-        SandwicheId.Of(2)
+        Price.Of(5, Devise.Euros)
     );
-    
-    private static readonly Sandwiche Sandwich3 = Sandwiche.Of(
+
+    private static readonly Sandwich Sandwich3 = Sandwich.Of(
         "Dieppois",
         new List<Ingredient>()
         {
@@ -41,20 +39,30 @@ public class FakeSandwichRepository
             Ingredient.WithQuantityOnly("mayonnaise", 10),
             Ingredient.WithQuantityOnly("salade", 10),
         },
-        Price.Of(4.50, Devise.Euros),
-        SandwicheId.Of(3)
+        Price.Of(4.50, Devise.Euros)
     );
 
-    public IDictionary<SandwicheId, Sandwiche> data { get; } = new Dictionary<SandwicheId, Sandwiche>()
+
+    public List<Sandwich> data { get; } = new List<Sandwich>()
     {
-        {Sandwich1.SandwicheId, Sandwich1},
-        {Sandwich2.SandwicheId, Sandwich2},
-        {Sandwich3.SandwicheId, Sandwich3}
+        {Sandwich1},
+        {Sandwich2},
+        {Sandwich3}
     };
 
-    public Sandwiche FindSandwicheById(SandwicheId sandwicheId)
+    public Sandwich FindSandwichByName(string sandwichName)
     {
-        return data[sandwicheId];
+        Sandwich res = null;
+        foreach (var sandwich in data)
+        {
+            if (sandwich.Name.ToLower().Trim().Replace(" ", "") == sandwichName.ToLower().Trim().Replace(" ", ""))
+                res = sandwich;
+        }
+        
+        if (res == null)
+            throw new KeyNotFoundException("Sandwich not found: " + sandwichName);
+        else
+            return res;
     }
-    
+
 }
