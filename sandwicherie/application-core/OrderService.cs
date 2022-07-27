@@ -6,23 +6,24 @@ namespace sandwicherie.application_core;
 
 public class OrderService
 {
-    private readonly FakeSandwichRepository _fakeSandwichRepository;
+    private readonly SandwichRepository _sandwichRepository;
     private readonly BillingGenerator _billingGenerator;
 
-    public OrderService(FakeSandwichRepository fakeSandwichRepository, BillingGenerator billingGenerator)
+    public OrderService(SandwichRepository sandwichRepository, BillingGenerator billingGenerator)
     {
-        this._fakeSandwichRepository = fakeSandwichRepository;
+        this._sandwichRepository = sandwichRepository;
         this._billingGenerator = billingGenerator;
     }
 
-    public void ProceedOrder(OrderRequest orderRequest)
+    public Order createOrder(OrderRequest orderRequest)
     {
         IDictionary<string, Sandwich> sandwiches = new Dictionary<string, Sandwich>();
         Price totalOrderPrice = Price.Of(0, Devise.Euros);
         
         foreach (var orderedSandwiche in orderRequest.Order)
         {
-            var sandwiche = _fakeSandwichRepository.FindSandwichByName(orderedSandwiche.Value);
+            var sandwiche = _sandwichRepository.FindByName(orderedSandwiche.Value);
+            
             sandwiches.Add(orderedSandwiche.Key, sandwiche);
             totalOrderPrice.Add(sandwiche.Price.Value);
         }
@@ -30,6 +31,6 @@ public class OrderService
 
         Order order = Order.Of(sandwiches, totalOrderPrice);
 
-        _billingGenerator.displayBill(order);
+        return order;
     }
 }

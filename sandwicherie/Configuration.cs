@@ -27,10 +27,10 @@ public class Configuration
     {
         return new ParserService();
     }
-    
+
     public static ConsoleCommand ConsoleCommand()
     {
-        return new ConsoleCommand(OrderService(), ParserService());
+        return new ConsoleCommand(OrderService(), ParserService(), BillingGenerator());
     }
     
     public static CLI CLI()

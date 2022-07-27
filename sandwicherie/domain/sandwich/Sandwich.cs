@@ -8,7 +8,6 @@ public class Sandwich
 
     public Price Price { get; }
     
-    
     private Sandwich(string name, List<Ingredient> ingredients, Price price)
     {
         Name = name;

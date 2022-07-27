@@ -16,10 +16,12 @@ public class CLI
         Console.WriteLine("Bonjour !");
         do
         {
+            Console.WriteLine("MENU ** Dieppois ** Jambon beurre ** Poulet crudités **");
             Console.WriteLine("Veuillez passer commande => A Sandwich1, B Sandwich2, ... , X Sandwich3");
+            Console.WriteLine("Exemple => Henri Poulet crudités, Mickael Jambon beurre");
             inputString = Console.ReadLine();
             try
-            {
+            { 
                 handleCLIInput(inputString);
             }
             catch (Exception e)
@@ -27,11 +29,16 @@ public class CLI
                 Console.WriteLine($"Error : {e.Message}");
             }
         } while (true);
-
     }
     
     private void handleCLIInput(string inputString)
     {
-        _consoleCommand.createOrder(inputString);
+        var response = _consoleCommand.createOrder(inputString);
+
+        display(response);
+    }
+    private void display(string response)
+    {
+        Console.WriteLine(response);
     }
 }
